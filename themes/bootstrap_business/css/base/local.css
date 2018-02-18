@@ -84,3 +84,7 @@ header#header {
 .dropdown-menu>li>a, ul.menu li a, nav ul.links li a {
     color: #5fb336;
 }
+
+.navbar-toggle .icon-bar {
+    border: 1px solid black;
+}
