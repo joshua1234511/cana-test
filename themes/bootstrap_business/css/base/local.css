@@ -22,3 +22,12 @@ div#block-bootstrap-business-branding {
 header#header {
     padding: 5px 0;
 }
+
+ul.menu a.is-active, ul.menu li a, nav ul.links li a {
+	color: #5fb336;
+}
+
+ul.sf-menu li:hover > ul, ul.sf-menu li.sfHover > ul {
+    left: 0;
+    top: 3.5em;
+}
