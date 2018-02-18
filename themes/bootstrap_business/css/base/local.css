@@ -1,1 +1,4 @@
 /* Custom CSS overrides */
+form#search-block-form {
+    text-align: center;
+}
