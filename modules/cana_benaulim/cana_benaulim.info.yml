@@ -1,0 +1,5 @@
+name: Cana Benaulim Custom Module
+type: module
+description: Cana Benaulim custom code
+package: Cana Benaulim
+core: 8.x
