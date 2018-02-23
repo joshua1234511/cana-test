@@ -66,3 +66,7 @@ ul.sf-menu li:hover > ul, ul.sf-menu li.sfHover > ul {
 .carousel .item {
     max-height: 460px;
 }
+
+.feed-icons, .path-frontpage .view-empty {
+    display: none;
+}
