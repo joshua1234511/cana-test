@@ -1,0 +1,68 @@
+form#search-block-form {
+    text-align: center;
+}
+
+.site-branding__text {
+    display: inline-block;
+}
+
+#logo {
+    display: inline-block;
+}
+
+#logo img {
+    max-height: 120px;
+}
+
+div#block-bootstrap-business-branding, div#block-cana-theme-branding, div#banner-inside, div#banner-inside > div {
+    padding: 0;
+}
+
+header#header {
+    padding: 5px 0;
+}
+
+ul.menu a.is-active, ul.menu li a, nav ul.links li a, ul.menu a.is-active {
+	color: #5fb336;
+}
+
+ul.sf-menu li:hover > ul, ul.sf-menu li.sfHover > ul {
+    left: 0;
+    top: 3.5em;
+}
+
+.carousel-fade .carousel-inner .item {
+  -webkit-transition-property: opacity;
+  transition-property: opacity;
+}
+.carousel-fade .carousel-inner .item,
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  opacity: 0;
+}
+.carousel-fade .carousel-inner .active,
+.carousel-fade .carousel-inner .next.left,
+.carousel-fade .carousel-inner .prev.right {
+  opacity: 1;
+}
+.carousel-fade .carousel-inner .next,
+.carousel-fade .carousel-inner .prev,
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  left: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+
+.region-footer-fourth li.menu-item {
+    list-style: none;
+    padding: 0;
+}
+
+.carousel a.carousel-control, .carousel a.carousel-control:active, .carousel a.carousel-control:hover {
+    background-color: transparent;
+}
+
+.carousel .item {
+    max-height: 460px;
+}
