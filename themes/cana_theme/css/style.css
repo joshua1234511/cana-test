@@ -6,6 +6,10 @@ body.maintenance-page.path-frontpage main > h1 {
   display: none;
 }
 
+body.maintenance-page.path-frontpage header a > img{
+  display: inline-block;
+}
+
 .site-branding__text {
     display: inline-block;
 }
