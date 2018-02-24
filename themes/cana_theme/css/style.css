@@ -1,5 +1,9 @@
-form#search-block-form {
+form#search-block-form, body.maintenance-page.path-frontpage {
     text-align: center;
+}
+
+body.maintenance-page.path-frontpage main > h1 {
+  display: none;
 }
 
 .site-branding__text {
