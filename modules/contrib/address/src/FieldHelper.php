@@ -2,7 +2,7 @@
 
 namespace Drupal\address;
 
-use CommerceGuys\Addressing\AddressFormat\AddressField;
+use CommerceGuys\Addressing\Enum\AddressField;
 
 /**
  * Provides property names and autocomplete attributes for AddressField values.
@@ -28,9 +28,7 @@ class FieldHelper {
       AddressField::ADDRESS_LINE1 => 'address_line1',
       AddressField::ADDRESS_LINE2 => 'address_line2',
       AddressField::ORGANIZATION => 'organization',
-      AddressField::GIVEN_NAME => 'given_name',
-      AddressField::ADDITIONAL_NAME => 'additional_name',
-      AddressField::FAMILY_NAME => 'family_name',
+      AddressField::RECIPIENT => 'recipient',
     ];
 
     return isset($property_mapping[$field]) ? $property_mapping[$field] : NULL;
@@ -39,7 +37,7 @@ class FieldHelper {
   /**
    * Gets the autocomplete attribute for the given AddressField value.
    *
-   * Source: https://html.spec.whatwg.org/multipage/forms.html#autofill.
+   * Source: https://html.spec.whatwg.org/multipage/forms.html#autofill
    *
    * @param string $field
    *   An AddressField value.
@@ -57,9 +55,7 @@ class FieldHelper {
       AddressField::ADDRESS_LINE1 => 'address-line1',
       AddressField::ADDRESS_LINE2 => 'address-line2',
       AddressField::ORGANIZATION => 'organization',
-      AddressField::FAMILY_NAME => 'family-name',
-      AddressField::ADDITIONAL_NAME => 'additional-name',
-      AddressField::GIVEN_NAME => 'given-name',
+      AddressField::RECIPIENT => 'name',
     ];
 
     return isset($autocomplete_mapping[$field]) ? $autocomplete_mapping[$field] : NULL;

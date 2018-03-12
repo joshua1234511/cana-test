@@ -19,25 +19,23 @@ class AddressTestEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Generates a set of available countries.
+   * Generate a set of available countries.
    *
-   * @return array
-   *   The countries.
+   * @return array Array of countries.
    */
   public function getAvailableCountries() {
-    return ['AU' => 'AU', 'BR' => 'BR', 'CA' => 'CA', 'GB' => 'GB', 'JP' => 'JP'];
+    return ['AU' => 'AU', 'BR' => 'BR', 'CA' => 'CA', 'FR' => 'FR', 'JP' => 'JP'];
   }
 
   /**
    * Generate a set of initial values.
    *
-   * @return array
-   *   The initial values.
+   * @return array Array of initial values.
    */
   public function getInitialValues() {
     return [
       'country_code' => 'AU',
-      'administrative_area' => 'NSW',
+      'administrative_area' => 'AU-NSW',
       'locality' => 'Sydney',
       'dependent_locality' => '',
       'postal_code' => '2000',
@@ -45,26 +43,23 @@ class AddressTestEventSubscriber implements EventSubscriberInterface {
       'address_line1' => 'Some address',
       'address_line2' => 'Some street',
       'organization' => 'Some Organization',
-      'given_name' => 'John',
-      'family_name' => 'Smith',
+      'recipient' => 'Some Recipient',
     ];
   }
 
   /**
-   * Alters the available countries.
+   * Set available countries in the available countries event.
    *
    * @param \Drupal\address\Event\AvailableCountriesEvent $event
-   *   The available countries event.
    */
   public function onAvailableCountries(AvailableCountriesEvent $event) {
     $event->setAvailableCountries($this->getAvailableCountries());
   }
 
   /**
-   * Alters the initial values.
+   * Set initial values in the initial values event.
    *
    * @param \Drupal\address\Event\InitialValuesEvent $event
-   *   The initial values event.
    */
   public function onInitialValues(InitialValuesEvent $event) {
     $event->setInitialValues($this->getInitialValues());

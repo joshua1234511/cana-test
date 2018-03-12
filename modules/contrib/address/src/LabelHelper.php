@@ -2,12 +2,12 @@
 
 namespace Drupal\address;
 
-use CommerceGuys\Addressing\AddressFormat\AddressField;
-use CommerceGuys\Addressing\AddressFormat\AdministrativeAreaType;
-use CommerceGuys\Addressing\AddressFormat\DependentLocalityType;
-use CommerceGuys\Addressing\AddressFormat\LocalityType;
-use CommerceGuys\Addressing\AddressFormat\PostalCodeType;
-use CommerceGuys\Addressing\AddressFormat\AddressFormat;
+use CommerceGuys\Addressing\Enum\AddressField;
+use CommerceGuys\Addressing\Enum\AdministrativeAreaType;
+use CommerceGuys\Addressing\Enum\DependentLocalityType;
+use CommerceGuys\Addressing\Enum\LocalityType;
+use CommerceGuys\Addressing\Enum\PostalCodeType;
+use Drupal\address\Entity\AddressFormatInterface;
 
 /**
  * Provides translated labels for the library enums.
@@ -21,13 +21,13 @@ class LabelHelper {
    * term than the field name (Company instead of Organization, Contact name
    * instead of Recipient, etc).
    *
-   * @param \CommerceGuys\Addressing\AddressFormat\AddressFormat $address_format
+   * @param \Drupal\address\Entity\AddressFormatInterface $address_format
    *   The address format.
    *
    * @return string[]
    *   An array of labels, keyed by field.
    */
-  public static function getFieldLabels(AddressFormat $address_format) {
+  public static function getFieldLabels(AddressFormatInterface $address_format) {
     $administrative_area_type = $address_format->getAdministrativeAreaType();
     $locality_type = $address_format->getLocalityType();
     $dependent_locality_type = $address_format->getDependentLocalityType();
@@ -44,9 +44,7 @@ class LabelHelper {
       // The address line 2 label is usually shown only to screen-reader users.
       AddressField::ADDRESS_LINE2 => t('Street address line 2', [], ['context' => 'Address label']),
       AddressField::ORGANIZATION => t('Company', [], ['context' => 'Address label']),
-      AddressField::GIVEN_NAME => t('First name', [], ['context' => 'Address label']),
-      AddressField::ADDITIONAL_NAME => t('Middle name', [], ['context' => 'Address label']),
-      AddressField::FAMILY_NAME => t('Last name', [], ['context' => 'Address label']),
+      AddressField::RECIPIENT => t('Contact name', [], ['context' => 'Address label']),
     ];
   }
 
@@ -67,10 +65,8 @@ class LabelHelper {
       AddressField::SORTING_CODE => t('Sorting code', [], ['context' => 'Address label']),
       AddressField::ADDRESS_LINE1 => t('Address line 1', [], ['context' => 'Address label']),
       AddressField::ADDRESS_LINE2 => t('Address line 2', [], ['context' => 'Address label']),
-      AddressField::ORGANIZATION => t('Company', [], ['context' => 'Address label']),
-      AddressField::GIVEN_NAME => t('First name', [], ['context' => 'Address label']),
-      AddressField::ADDITIONAL_NAME => t('Middle name', [], ['context' => 'Address label']),
-      AddressField::FAMILY_NAME => t('Last name', [], ['context' => 'Address label']),
+      AddressField::ORGANIZATION => t('Organization', [], ['context' => 'Address label']),
+      AddressField::RECIPIENT => t('Recipient', [], ['context' => 'Address label']),
     ];
   }
 
@@ -212,10 +208,9 @@ class LabelHelper {
    */
   public static function getPostalCodeLabels() {
     return [
-      PostalCodeType::EIR => t('Eircode', [], ['context' => 'Address label']),
-      PostalCodeType::PIN => t('Pin code', [], ['context' => 'Address label']),
       PostalCodeType::POSTAL => t('Postal code', [], ['context' => 'Address label']),
       PostalCodeType::ZIP => t('Zip code', [], ['context' => 'Address label']),
+      PostalCodeType::PIN => t('Pin code', [], ['context' => 'Address label']),
     ];
   }
 

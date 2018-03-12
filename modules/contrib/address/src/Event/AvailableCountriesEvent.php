@@ -76,3 +76,4 @@ class AvailableCountriesEvent extends Event {
   }
 
 }
+

@@ -3,16 +3,17 @@
 namespace Drupal\address\Repository;
 
 use CommerceGuys\Intl\Country\CountryRepository as ExternalCountryRepository;
-use CommerceGuys\Addressing\Country\CountryRepositoryInterface as ExternalCountryRepositoryInterface;
+use CommerceGuys\Addressing\Repository\CountryRepositoryInterface as ExternalCountryRepositoryInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Locale\CountryManagerInterface;
 
 /**
  * Defines the country repository.
  *
  * Countries are stored on disk in JSON and cached inside Drupal.
  */
-class CountryRepository extends ExternalCountryRepository implements ExternalCountryRepositoryInterface {
+class CountryRepository extends ExternalCountryRepository implements ExternalCountryRepositoryInterface, CountryManagerInterface {
 
   /**
    * The cache backend.
@@ -20,6 +21,13 @@ class CountryRepository extends ExternalCountryRepository implements ExternalCou
    * @var \Drupal\Core\Cache\CacheBackendInterface
    */
   protected $cache;
+
+  /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
 
   /**
    * Creates a CountryRepository instance.
@@ -30,12 +38,10 @@ class CountryRepository extends ExternalCountryRepository implements ExternalCou
    *   The language manager.
    */
   public function __construct(CacheBackendInterface $cache, LanguageManagerInterface $language_manager) {
-    parent::__construct();
-
     $this->cache = $cache;
-    // The getCurrentLanguage() fallback is a workaround for core bug #2684873.
-    $language = $language_manager->getConfigOverrideLanguage() ?: $language_manager->getCurrentLanguage();
-    $this->defaultLocale = $language->getId();
+    $this->languageManager = $language_manager;
+
+    parent::__construct();
   }
 
   /**
@@ -68,7 +74,6 @@ class CountryRepository extends ExternalCountryRepository implements ExternalCou
    * Loads the base country definitions.
    *
    * @return array
-   *   The base country definitions.
    */
   protected function loadBaseDefinitions() {
     if (!empty($this->baseDefinitions)) {
@@ -85,6 +90,15 @@ class CountryRepository extends ExternalCountryRepository implements ExternalCou
     }
 
     return $this->baseDefinitions;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getDefaultLocale() {
+    // The getCurrentLanguage() fallback is a workaround for core bug #2684873.
+    $language = $this->languageManager->getConfigOverrideLanguage() ?: $this->languageManager->getCurrentLanguage();
+    return $language->getId();
   }
 
 }

@@ -2,14 +2,13 @@
 
 namespace Drupal\address\Plugin\views\field;
 
-use CommerceGuys\Addressing\LocaleHelper;
-use CommerceGuys\Addressing\Subdivision\SubdivisionRepositoryInterface;
+use CommerceGuys\Addressing\Repository\SubdivisionRepositoryInterface;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Displays the subdivision.
+ * Displays the subdivision name instead of the id.
  *
  * @ingroup views_field_handlers
  *
@@ -20,7 +19,7 @@ class Subdivision extends FieldPluginBase {
   /**
    * The subdivision repository.
    *
-   * @var \CommerceGuys\Addressing\Subdivision\SubdivisionRepositoryInterface
+   * @var \CommerceGuys\Addressing\Repository\SubdivisionRepositoryInterface
    */
   protected $subdivisionRepository;
 
@@ -33,7 +32,7 @@ class Subdivision extends FieldPluginBase {
    *   The id of the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \CommerceGuys\Addressing\Subdivision\SubdivisionRepositoryInterface $subdivision_repository
+   * @param \CommerceGuys\Addressing\Repository\SubdivisionRepositoryInterface $subdivision_repository
    *   The subdivision repository.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, SubdivisionRepositoryInterface $subdivision_repository) {
@@ -64,42 +63,29 @@ class Subdivision extends FieldPluginBase {
     }
 
     $entity = $this->getEntity($values);
-    /** @var \Drupal\address\AddressInterface $address */
     $address = $entity->{$this->definition['field_name']}->first();
     switch ($this->definition['property']) {
       case 'administrative_area':
-        $code = $address->getAdministrativeArea();
-        $parents = [
-          $address->getCountryCode(),
-        ];
+        $parent_id = NULL;
+        $needs_parent = FALSE;
         break;
-
       case 'locality':
-        $code = $address->getLocality();
-        $parents = [
-          $address->getCountryCode(),
-          $address->getAdministrativeArea(),
-        ];
+        $parent_id = $address->administrative_area;
+        $needs_parent = TRUE;
         break;
-
       case 'dependent_locality':
-        $code = $address->getDependentLocality();
-        $parents = [
-          $address->getCountryCode(),
-          $address->getAdministrativeArea(),
-          $address->getLocality(),
-        ];
+        $parent_id = $address->locality;
+        $needs_parent = TRUE;
         break;
     }
-    /** @var \CommerceGuys\Addressing\Subdivision\Subdivision $subdivision */
-    $subdivision = $this->subdivisionRepository->get($code, $parents);
-    // @todo Allow a choice between subdivision code and name.
-    if ($subdivision) {
-      $use_local_name = LocaleHelper::match($address->getLocale(), $subdivision->getLocale());
-      $value = $use_local_name ? $subdivision->getLocalName() : $subdivision->getName();
+
+    if (!$needs_parent || !empty($parent_id)) {
+      $subdivisions = $this->subdivisionRepository->getList($address->country_code, $parent_id);
+      if (isset($subdivisions[$value])) {
+        $value = $subdivisions[$value];
+      }
     }
 
     return $this->sanitizeValue($value);
   }
-
 }

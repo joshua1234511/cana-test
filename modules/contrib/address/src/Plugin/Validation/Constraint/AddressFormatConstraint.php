@@ -2,7 +2,7 @@
 
 namespace Drupal\address\Plugin\Validation\Constraint;
 
-use CommerceGuys\Addressing\AddressFormat\AddressField;
+use CommerceGuys\Addressing\Enum\AddressField;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -22,7 +22,7 @@ class AddressFormatConstraint extends Constraint {
   public $invalidMessage = '@name field is not in the right format.';
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    */
   public function __construct($options = NULL) {
     parent::__construct($options);
@@ -34,7 +34,7 @@ class AddressFormatConstraint extends Constraint {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inheritDoc}
    */
   public function getTargets() {
     return self::CLASS_CONSTRAINT;
