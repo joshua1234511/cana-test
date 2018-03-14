@@ -2,9 +2,7 @@
 
 namespace Drupal\address\Plugin\Field\FieldType;
 
-use CommerceGuys\Addressing\Enum\AddressField;
-use Drupal\address\Event\AddressEvents;
-use Drupal\address\Event\AvailableCountriesEvent;
+use CommerceGuys\Addressing\AddressFormat\AddressField;
 use Drupal\address\AddressInterface;
 use Drupal\address\LabelHelper;
 use Drupal\Core\Field\FieldItemBase;
@@ -20,18 +18,14 @@ use Drupal\Core\TypedData\DataDefinition;
  *   id = "address",
  *   label = @Translation("Address"),
  *   description = @Translation("An entity field containing a postal address"),
+ *   category = @Translation("Address"),
  *   default_widget = "address_default",
  *   default_formatter = "address_default"
  * )
  */
 class AddressItem extends FieldItemBase implements AddressInterface {
 
-  /**
-   * An altered list of available countries.
-   *
-   * @var array
-   */
-  protected static $availableCountries = [];
+  use AvailableCountriesTrait;
 
   /**
    * {@inheritdoc}
@@ -79,12 +73,27 @@ class AddressItem extends FieldItemBase implements AddressInterface {
           'type' => 'varchar',
           'length' => 255,
         ],
-        'recipient' => [
+        'given_name' => [
+          'type' => 'varchar',
+          'length' => 255,
+        ],
+        'additional_name' => [
+          'type' => 'varchar',
+          'length' => 255,
+        ],
+        'family_name' => [
           'type' => 'varchar',
           'length' => 255,
         ],
       ],
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function mainPropertyName() {
+    return NULL;
   }
 
   /**
@@ -112,8 +121,12 @@ class AddressItem extends FieldItemBase implements AddressInterface {
       ->setLabel(t('The second line of the address block.'));
     $properties['organization'] = DataDefinition::create('string')
       ->setLabel(t('The organization'));
-    $properties['recipient'] = DataDefinition::create('string')
-      ->setLabel(t('The recipient.'));
+    $properties['given_name'] = DataDefinition::create('string')
+      ->setLabel(t('The given name.'));
+    $properties['additional_name'] = DataDefinition::create('string')
+      ->setLabel(t('The additional name.'));
+    $properties['family_name'] = DataDefinition::create('string')
+      ->setLabel(t('The family name.'));
 
     return $properties;
   }
@@ -122,11 +135,10 @@ class AddressItem extends FieldItemBase implements AddressInterface {
    * {@inheritdoc}
    */
   public static function defaultFieldSettings() {
-    return [
-      'available_countries' => [],
+    return self::defaultCountrySettings() + [
       'fields' => array_values(AddressField::getAll()),
       'langcode_override' => '',
-    ] + parent::defaultFieldSettings();
+    ];
   }
 
   /**
@@ -142,16 +154,7 @@ class AddressItem extends FieldItemBase implements AddressInterface {
       }
     }
 
-    $element = [];
-    $element['available_countries'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Available countries'),
-      '#description' => $this->t('If no countries are selected, all countries will be available.'),
-      '#options' => \Drupal::service('address.country_repository')->getList(),
-      '#default_value' => $this->getSetting('available_countries'),
-      '#multiple' => TRUE,
-      '#size' => 10,
-    ];
+    $element = $this->countrySettingsForm($form, $form_state);
     $element['fields'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Used fields'),
@@ -171,27 +174,6 @@ class AddressItem extends FieldItemBase implements AddressInterface {
     ];
 
     return $element;
-  }
-
-  /**
-   * Gets the available countries for the current field.
-   *
-   * @return array
-   *   A list of country codes.
-   */
-  public function getAvailableCountries() {
-    // Alter the list once per field, instead of once per field delta.
-    $field_definition = $this->getFieldDefinition();
-    $definition_id = spl_object_hash($field_definition);
-    if (!isset(static::$availableCountries[$definition_id])) {
-      $available_countries = array_filter($this->getSetting('available_countries'));
-      $event_dispatcher = \Drupal::service('event_dispatcher');
-      $event = new AvailableCountriesEvent($available_countries, $field_definition);
-      $event_dispatcher->dispatch(AddressEvents::AVAILABLE_COUNTRIES, $event);
-      static::$availableCountries[$definition_id] = $event->getAvailableCountries();
-    }
-
-    return static::$availableCountries[$definition_id];
   }
 
   /**
@@ -243,11 +225,16 @@ class AddressItem extends FieldItemBase implements AddressInterface {
    */
   public function getConstraints() {
     $constraints = parent::getConstraints();
-    $manager = \Drupal::typedDataManager()->getValidationConstraintManager();
-    $available_countries = $this->getAvailableCountries();
+    $constraint_manager = \Drupal::typedDataManager()->getValidationConstraintManager();
     $enabled_fields = array_filter($this->getSetting('fields'));
-    $constraints[] = $manager->create('Country', ['availableCountries' => $available_countries]);
-    $constraints[] = $manager->create('AddressFormat', ['fields' => $enabled_fields]);
+    $constraints[] = $constraint_manager->create('ComplexData', [
+      'country_code' => [
+        'Country' => [
+          'availableCountries' => $this->getAvailableCountries(),
+        ],
+      ],
+    ]);
+    $constraints[] = $constraint_manager->create('AddressFormat', ['fields' => $enabled_fields]);
 
     return $constraints;
   }
@@ -340,8 +327,22 @@ class AddressItem extends FieldItemBase implements AddressInterface {
   /**
    * {@inheritdoc}
    */
-  public function getRecipient() {
-    return $this->recipient;
+  public function getGivenName() {
+    return $this->given_name;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAdditionalName() {
+    return $this->additional_name;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFamilyName() {
+    return $this->family_name;
   }
 
 }
