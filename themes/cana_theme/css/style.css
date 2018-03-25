@@ -78,3 +78,21 @@ ul.sf-menu li:hover > ul, ul.sf-menu li.sfHover > ul {
 .feed-icons, .path-frontpage .view-empty {
     display: none;
 }
+
+#main-navigation ul.menu ul li a {
+  border: none;
+}
+
+.field--name-field-forms{
+  margin-bottom: 10px;
+}
+
+.field--name-field-forms .field__label {
+  display: none;
+}
+
+.region.region-sidebar-second, .region.region-content {
+  padding: 20px 40px;
+  background-color: #fff;
+  border-radius: 4px;
+}
