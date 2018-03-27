@@ -96,3 +96,27 @@ ul.sf-menu li:hover > ul, ul.sf-menu li.sfHover > ul {
   background-color: #fff;
   border-radius: 4px;
 }
+
+div#top-content {
+  padding: 0;
+  margin: 0;
+}
+
+div#block-views-block-homepage-notification-block-1 {
+  text-align: center;
+  vertical-align: middle;
+}
+
+div#block-views-block-homepage-notification-block-1 div {
+  height: 40px;
+  vertical-align: middle;
+}
+
+div#block-views-block-homepage-notification-block-1 h2 {
+  padding: 0;
+  margin: 0;
+}
+
+.views_slideshow_cycle_teaser_section{
+  height: 40px!important;
+}
