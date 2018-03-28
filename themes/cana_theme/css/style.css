@@ -121,3 +121,29 @@ div#block-views-block-homepage-notification-block-1 h2 {
 .views_slideshow_cycle_teaser_section{
   height: 40px!important;
 }
+
+div#top-inside {
+  background-color: #fcfcfc;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 1px;
+  padding: 60px 0 30px;
+}
+
+#top-inside h2 {
+  clear: both;
+  font-size: 16px;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+#top-inside h2:after {
+  background-color: #444;
+  content: "";
+  display: block;
+  height: 4px;
+  width: 20px;
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+}
