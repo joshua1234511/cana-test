@@ -234,6 +234,47 @@
         </div>
     </div>
     <!-- EOF:#main-content -->
+
+    {% if page.top_first or page.top_second or page.top_third or page.top_fourth %}
+    <!-- #footer-inside -->
+        <div id="top-inside" class="clearfix">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        {% if page.top_first %}
+                        <div class="top-area">
+                        {{ page.top_first }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-3">
+                        {% if page.top_second %}
+                        <div class="top-area">
+                        {{ page.top_second }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-3">
+                        {% if page.top_third %}
+                        <div class="top-area">
+                        {{ page.top_third }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-3">
+                        {% if page.top_fourth %}
+                        <div class="top-area">
+                        {{ page.top_fourth }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     
     {% if page.bottom_content %}
     <!-- #bottom-content -->

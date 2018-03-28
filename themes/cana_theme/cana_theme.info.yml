@@ -21,6 +21,10 @@ regions:
     content: Content
     sidebar_first: 'Sidebar First'
     sidebar_second: 'Sidebar Second'
+    top_first: 'Top First'
+    top_second: 'Top Second'
+    top_third: 'Top Third'
+    top_fourth: 'Top Fourth'
     bottom_content: 'Bottom Content'
     footer_first: 'Footer First'
     footer_second: 'Footer Second'

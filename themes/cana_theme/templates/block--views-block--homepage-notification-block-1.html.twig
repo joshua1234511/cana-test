@@ -37,21 +37,21 @@
   ]
 %}
 <div{{ attributes.addClass(classes) }}>
-  <div class="col-md-3"> 
+  <div class="col-md-2"> 
     {{ title_prefix }}
     {% if label %}
       <h2{{ title_attributes }}>{{ label }}</h2>
     {% endif %}
     {{ title_suffix }}
   </div>
-  <div class="col-md-6"> 
+  <div class="col-md-8"> 
     {% block content %}
       <div{{ content_attributes.addClass('content') }}>
         {{ content }}
       </div>
     {% endblock %}
   </div>
-  <div class="col-md-3"> 
+  <div class="col-md-2"> 
     <div class="more-link"><a href="/notices">View More</a></div> 
   </div>
 </div>
